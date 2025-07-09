@@ -9,7 +9,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='YOLOv10 Training')
     parser.add_argument('--config', type=str, default='configs/train_config.yaml',
                         help='训练配置文件路径')
-    parser.add_argument('--data', type=str, default='data/dataset.yaml',
+    parser.add_argument('--data', type=str, default='configs/dataset/ssdd.yaml',
                         help='数据集配置文件路径')
     parser.add_argument('--model', type=str, default='yolov10n.pt',
                         help='预训练模型路径')

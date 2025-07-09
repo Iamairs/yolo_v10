@@ -1,0 +1,50 @@
+# YOLOv10 训练配置文件
+
+# 训练参数
+lr0: 0.01              # 初始学习率
+lrf: 0.01              # 最终学习率 (lr0 * lrf)
+momentum: 0.937        # SGD动量/Adam beta1
+weight_decay: 0.0005   # 优化器权重衰减
+warmup_epochs: 3.0     # 预热训练轮数
+warmup_momentum: 0.8   # 预热动量
+warmup_bias_lr: 0.1    # 预热偏置学习率
+box: 7.5               # 边框损失增益
+cls: 0.5               # 分类损失增益
+dfl: 1.5               # 分布焦点损失增益
+
+# 数据增强
+hsv_h: 0.015           # 图像HSV-色调增强 (分数)
+hsv_s: 0.7             # 图像HSV-饱和度增强 (分数)
+hsv_v: 0.4             # 图像HSV-明度增强 (分数)
+degrees: 0.0           # 图像旋转 (+/- 度数)
+translate: 0.1         # 图像平移 (+/- 分数)
+scale: 0.5             # 图像缩放 (+/- 增益)
+shear: 0.0             # 图像剪切 (+/- 度数)
+perspective: 0.0       # 图像透视 (+/- 分数), 范围 0-0.001
+flipud: 0.0            # 图像上下翻转 (概率)
+fliplr: 0.5            # 图像左右翻转 (概率)
+mosaic: 1.0            # 图像马赛克 (概率)
+mixup: 0.0             # 图像混合 (概率)
+copy_paste: 0.0        # 分割复制粘贴 (概率)
+
+# 其他设置
+patience: 50           # EarlyStopping patience (训练无改善时等待的轮数)
+save_period: -1        # 每x轮保存一次检查点 (-1 = 禁用)
+workers: 8             # 数据加载器工作进程数 (每个RANK设置为0表示自动)
+seed: 0                # 全局训练种子
+deterministic: True    # 强制确定性
+single_cls: False      # 将多类数据作为单类训练
+rect: False            # 矩形训练
+cos_lr: False          # 余弦学习率调度器
+close_mosaic: 10       # 禁用最后N轮的马赛克增强
+resume: False          # 从last.pt恢复训练
+amp: True              # 自动混合精度 (AMP) 训练
+fraction: 1.0          # 要训练的数据集分数 (默认=1.0, 所有图像在训练集中)
+profile: False         # 在训练期间配置ONNX和TensorRT速度
+freeze: None           # 冻结层: 骨干网络=10, 前3层=0,1,2
+multi_scale: False     # 变化图像大小 +/- 50%
+overlap_mask: True     # 训练期间掩码应重叠 (分割训练)
+mask_ratio: 4          # 掩码下采样比例 (分割训练)
+dropout: 0.0           # 使用dropout正则化 (仅分类训练)
+val: True              # 训练期间验证/测试
+plots: True            # 保存训练图表

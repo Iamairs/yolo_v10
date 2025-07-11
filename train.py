@@ -9,15 +9,17 @@ def parse_args():
     parser = argparse.ArgumentParser(description='YOLOv10 Training')
     parser.add_argument('--config', type=str, default='configs/train_config.yaml',
                         help='训练配置文件路径')
-    parser.add_argument('--data', type=str, default='configs/dataset/ssdd.yaml',
+    parser.add_argument('--dataset_name', type=str, default='HRSID',
+                        help='数据集名称')
+    parser.add_argument('--data_dir', type=str, default='configs/dataset',
                         help='数据集配置文件路径')
-    parser.add_argument('--model', type=str, default='yolov10n.pt',
+    parser.add_argument('--model', type=str, default='yolov10s.pt',
                         help='预训练模型路径')
     parser.add_argument('--epochs', type=int, default=100,
                         help='训练轮数')
-    parser.add_argument('--batch', type=int, default=16,
+    parser.add_argument('--batch', type=int, default=8,
                         help='批次大小')
-    parser.add_argument('--imgsz', type=int, default=640,
+    parser.add_argument('--imgsz', type=int, default=800,
                         help='图像尺寸')
     parser.add_argument('--device', type=str, default='0',
                         help='设备 (0, 1, 2, ... 或 cpu)')
@@ -41,9 +43,14 @@ def load_config(config_path):
 def main():
     args = parse_args()
 
-    # 创建必要的目录
-    os.makedirs('runs/train', exist_ok=True)
-    os.makedirs('weights', exist_ok=True)
+    recording_dir = Path(args.project)
+    if not recording_dir.exists():
+        print(f"创建目录: {recording_dir}")
+        recording_dir.mkdir(parents=True, exist_ok=True)
+    weights_dir = Path(f'weights/weight_{args.dataset_name}')
+    if not weights_dir.exists():
+        print(f"创建目录: {weights_dir}")
+        weights_dir.mkdir(parents=True, exist_ok=True)
 
     # 加载配置
     config = load_config(args.config)
@@ -58,14 +65,13 @@ def main():
 
     # 训练参数
     train_args = {
-        'data': args.data,
+        'data': f"{args.data_dir}/{args.dataset_name}.yaml",  # 数据集配置文件路径
         'epochs': args.epochs,
         'batch': args.batch,
         'imgsz': args.imgsz,
         'device': args.device,
         'project': args.project,
         'name': args.name,
-        'save_period': 10,  # 每10个epoch保存一次
         'val': True,
         'plots': True,
         'verbose': True,
@@ -81,9 +87,9 @@ def main():
     results = model.train(**train_args)
 
     # 保存最终模型
-    model.save(f'weights/yolov10_final.pt')
+    model.save(f'{weights_dir}/yolov10_final.pt')
     print("训练完成!")
-    print(f"最佳模型保存在: {results.save_dir}/weights/best.pt")
+    print(f"最佳模型保存在: {recording_dir}/weights/best.pt")
 
 
 if __name__ == '__main__':

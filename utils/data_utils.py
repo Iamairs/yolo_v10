@@ -117,3 +117,13 @@ def check_dataset(data_yaml_path):
                 print(f"  警告: {len(orphan_images)} 个图像没有对应标签")
             if orphan_labels:
                 print(f"  警告: {len(orphan_labels)} 个标签没有对应图像")
+
+
+def main():
+    image_dir = r"F:\Dataset\Detection\SSDD\yolo\images"
+    label_dir = r"F:\Dataset\Detection\SSDD\yolo\labels"
+    output_dir = r"F:\Dataset\Detection\SSDD\yolo\split"
+    split_dataset(image_dir, label_dir, output_dir, train_ratio=0.7, val_ratio=0.2, test_ratio=0.1)
+
+if __name__ == "__main__":
+    main()

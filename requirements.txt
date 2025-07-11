@@ -21,4 +21,3 @@ tensorboard
 onnx
 onnxsim
 onnxruntime
-tensorflow
